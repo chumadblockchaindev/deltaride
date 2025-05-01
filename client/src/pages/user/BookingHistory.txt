@@ -15,41 +15,45 @@ interface Booking {
 function BookingHistory() {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
-  // Fetch booking history
+  // Fetch bookings once
   useEffect(() => {
     async function fetchBooking() {
       try {
         const res = await api.get('/api/booking/history/');
-        const bookingsData: Booking[] = res.data;
-        setBookings(bookingsData);
-
-        const uniqueCarIds = Array.from(new Set(bookingsData.map(b => b.car_id)));
-
-        // Batch car detail requests
-        const carDetailPromises = uniqueCarIds.map(car_id =>
-          api.post('/api/cars/detail/', { car_id }).then(res => res.data)
-        );
-
-        const carDetails: CarInterface[] = await Promise.all(carDetailPromises);
-
-        // Map car_id to car_detail
-        const carDetailMap = new Map<number, CarInterface>();
-        carDetails.forEach(detail => carDetailMap.set(detail.id, detail));
-
-        // Merge car_detail into bookings
-        const bookingsWithDetails = bookingsData.map(booking => ({
-          ...booking,
-          car_detail: carDetailMap.get(booking.car_id),
-        }));
-
-        setBookings(bookingsWithDetails);
+        setBookings(res.data);
       } catch (err) {
-        console.error('Error fetching bookings or car details:', err);
+        console.error(err);
+      }
+    }
+    fetchBooking();
+  }, []);
+
+  // Fetch car details once after bookings are loaded
+  useEffect(() => {
+    async function getCarDetails(data: Booking[]) {
+      for (let i = 0; i < data.length; i++) {
+        try {
+          const res = await api.post('/api/cars/detail/', { car_id: data[i].car_id });
+          setBookings((prevData) =>
+            prevData.map((item) =>
+              item.car_id === res.data.id
+                ? {
+                    ...item,
+                    car_detail: res.data,
+                  }
+                : item
+            )
+          );
+        } catch (err) {
+          console.error("Error fetching car data", err);
+        }
       }
     }
 
-    fetchBooking();
-  }, []);
+    if (bookings.length > 0) {
+      getCarDetails(bookings);
+    }
+  }, [bookings.length]); // only run once after bookings are initially set
 
   return (
     <motion.div

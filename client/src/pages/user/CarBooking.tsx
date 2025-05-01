@@ -39,7 +39,6 @@ function CarBooking() {
   const handleBooking = (car_id: number) => {
     const start_date = formatDate(startDate)
     const end_date = formatDate(startDate)
-    console.log(start_date, end_date)
     api.post('/api/booking/book/', {car_id, start_date, end_date})
       .then(() => setMessage('✅ Booking successful!'))
       .catch(() => setMessage('❌ Booking failed.'));

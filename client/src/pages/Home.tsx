@@ -17,7 +17,7 @@ const Home = () => {
     api.get('api/testimonials/testimonials/')
     .then(res => setTestimonials(res.data))
     .catch(err => console.log(err))
-  })
+  }, [])
 
   return (
     <main>

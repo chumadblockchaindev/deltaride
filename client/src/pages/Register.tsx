@@ -53,10 +53,6 @@ const RegistrationForm = () => {
   return (
     <section className="bg-gradient-to-br from-cyan-950 via-gray-900 to-black min-h-screen flex items-center justify-center py-40">
       <div className="bg-black bg-opacity-50 border border-cyan-800 shadow-lg rounded-2xl w-full max-w-md p-8 space-y-6 text-white">
-        <div className="flex items-center justify-center gap-2 mb-6">
-          <span className="text-3xl font-bold tracking-widest text-cyan-400">DeltaRide</span>
-        </div>
-
         <h1 className="text-2xl font-bold text-center text-cyan-300">Create an Account</h1>
 
         <form className="space-y-4" onSubmit={handleSubmit}>

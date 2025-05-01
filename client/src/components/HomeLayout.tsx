@@ -21,7 +21,7 @@ const HomeLayout = () => {
   return (
     <main className="relative">
       <nav className="flex justify-between items-center p-4 bg-black text-white fixed w-full z-50 shadow-md">
-        <div className="text-2xl font-bold px-4">Book Rider</div>
+        <div className="text-2xl font-bold px-4">Delta Ride</div>
 
         <div className="md:hidden px-4">
           <button onClick={toggleMenu}>

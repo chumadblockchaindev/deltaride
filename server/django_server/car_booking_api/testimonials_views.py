@@ -15,3 +15,4 @@ class CreateTestimonialView(generics.CreateAPIView):
 class PublicTestimonialListView(generics.ListAPIView):
     queryset = Testimonial.objects.filter(active=True)
     serializer_class = TestimonialSerializer
+    permission_classes = [permissions.AllowAny]
